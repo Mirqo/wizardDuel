@@ -1,0 +1,20 @@
+{
+  "name": "wizard_duel",
+  "version": "1.0.0",
+  "description": "duel",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "wizard",
+    "duel"
+  ],
+  "author": "Miroslav Mrozek",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.14.0",
+    "socket.io": "^1.7.2"
+  }
+}
