@@ -1,0 +1,10 @@
+body {
+	font-family: "Times New Roma", Times, serif;
+}
+#tutorial {
+	float:right;
+	width:400px;
+	text-align: center;
+	margin: 1em;
+	border: 1px solid black;
+}

@@ -16,6 +16,8 @@ function preload() {
 var socket;
 var testing;
 var player;
+
+var enemies;
 var keys;
 var enemyFireballs;
 var myFireballs;
@@ -47,11 +49,12 @@ up: game.input.keyboard.addKey(Phaser.Keyboard.W),
 	};
 	enemy = game.add.sprite(400,200,"blue_mage");
 	enemy.frame = 0;
+	enemy.enableBody = 0;
 	game.physics.arcade.enable(enemy);
 	enemy.anchor.setTo(0.5, 0.5);
 	player.hp = 20;
 	enemy.hp = 20;
-
+/*
 	enemyFireballs = game.add.group();
 	enemyFireballs.enableBody = true;
 	enemyFireballs.physicsBodyType = Phaser.Physics.ARCADE;
@@ -61,7 +64,7 @@ up: game.input.keyboard.addKey(Phaser.Keyboard.W),
 	enemyFireballs.setAll('anchor.y', 0.5);
 	enemyFireballs.setAll('outOfBoundsKill', true);
 	enemyFireballs.setAll('checkWorldBounds', true);
-
+*/
 	myFireballs = game.add.group();
 	myFireballs.enableBody = true;
 	myFireballs.physicsBodyType = Phaser.Physics.ARCADE;
@@ -80,7 +83,7 @@ up: game.input.keyboard.addKey(Phaser.Keyboard.W),
 	//  The Text is positioned at 0, 100
 	text = game.add.text(0, 0, "phaser 2.4 text bounds", style);
 	socket.on("move", enemyMove);
-	socket.on("fireball", recieveFireball);
+	//socket.on("fireball", recieveFireball);
 }
 
 function update() {
@@ -90,7 +93,7 @@ function update() {
 
 	//for (var i = myFireballs.children.length-1; i >= 0; i--){
 	game.physics.arcade.overlap(myFireballs.children, enemy, enemyHit, null, this);
-	game.physics.arcade.overlap(enemyFireballs.children, player, playerHit, null, this);
+	//game.physics.arcade.overlap(enemyFireballs.children, player, playerHit, null, this);
 	//}
 
 	player.body.velocity.x = 0;
@@ -136,7 +139,7 @@ function fire(){
 	if (FIREBALL.nextFire <= game.time.now && myFireballs.countDead() > 0){
 		FIREBALL.nextFire = game.time.now + FIREBALL.cooldown;
 		var fireball = myFireballs.getFirstExists(false);
-		fireball.reset(player.x, player.y);
+		fireball.reset(player.x, player.y); //set fireball that is about to be fired to players pos
 		game.physics.arcade.moveToPointer(fireball, FIREBALL.speed);
 		socket.emit("fireball", {x: game.input.x, y: game.input.y});
 	}
