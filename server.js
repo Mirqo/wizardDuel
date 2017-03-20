@@ -19,8 +19,9 @@ function newConnection(socket) {
 	p = new Player(socket.id);
 	io.to(socket.id).emit("you", p);
 	io.to(socket.id).emit("enemies", players);
+	console.log("new client got " + players.length + " enemies");
 	players.push(p);
-	socket.broadcat.emit("user connected", p);
+	socket.broadcast.emit("user connected", p);
 
 	socket.on("disconnect", removePlayer);
 	function removePlayer(){
@@ -30,6 +31,8 @@ function newConnection(socket) {
 			}
 		}
 		socket.broadcast.emit("user disconnected", socket.id);
+		console.log("user disconnected " + socket.id);
+		console.log("remaining players: " + players.length);
 	}
 	socket.on("move", moveMessage);
 
@@ -39,21 +42,16 @@ function newConnection(socket) {
 			if (players[i].id == socket.id){
 				players[i].x = data.x;
 				players[i].y = data.y;
+				break;
 			}
 		}
 		socket.broadcast.emit("move",data);
 		//console.log(data);
 	}
 
-	socket.on("fireball", sendFireball);
-	function sendFireball(data){
-		data.id = socket.id; // so that players know whose fireball it is 
-		socket.broadcast.emit("fireball", data);
-		console.log(data);
-	}
 }
 function Player(id){
-	this.x = MATH.random()*500;
-	this.y = MATH.random()*500;
+	this.x = Math.random()*500;
+	this.y = Math.random()*500;
 	this.id = id;
 }
